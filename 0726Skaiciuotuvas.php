@@ -21,6 +21,19 @@ if (isset($_GET["patvirtinti"])) {
 
     if (isset ($_GET["aritmetika"]) && !empty($_GET["aritmetika"])) {
         $aritmetika=$_GET["aritmetika"]; 
+
+        // $duomenuMasyvas= str_split($aritmetika, 1); // funkcija isskaido teksta i masyva i vienodas dalis
+
+        // exploade- teksta pavercia i masyva, suskaido pagal delimiter- simbolius
+
+        // reikia pritaikyti ir kitiems simboliams 
+        // skaiciai su tarpais, sutvarkyti 
+        $duomenuMasyvas=explode("+", $aritmetika); 
+
+        var_dump($duomenuMasyvas);
+
+
+
         echo $aritmetika; 
         
     } else {
