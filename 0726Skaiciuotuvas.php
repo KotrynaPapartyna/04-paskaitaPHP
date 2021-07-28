@@ -16,11 +16,52 @@
 
 <?php 
 
+// set cookie- nustatymo komanda
+// ("pavadinimas", po , - nurodoma- ka turi saugoti)
+// saugoma gali buti ir kintamasis ir masyvas, objektas- bet kas 
+// po saugijimo- nurodomas laikas- kiek saugoti- nurodoma sekundemis
+// po laiko nurodomas kokiams psl yra taikoma- /localhost
+
+// setcookie("laikinojiAtmintis",8, time() +3600, "/"); 
+
+// funkcijos, cookies 
+
+
+    function skaiciavimoFunkcija ($simbolis, $aritmetika) {
+        $duomenuMasyvas=explode($simbolis, $aritmetika); 
+
+
+        //var_dump($duomenuMasyvas); 
+        $duomenuMasyvas[2]=$simbolis; 
+
+        $pagalbinis= $duomenuMasyvas[2];
+        $duomenuMasyvas[2]= $duomenuMasyvas[1]; 
+        $duomenuMasyvas[1]=$pagalbinis;
+
+        if ($simbolis=="+") {
+
+            return $duomenuMasyvas[0] + $duomenuMasyvas [2];
+        } else if ($simbolis=="-") {
+          return $duomenuMasyvas[0] - $duomenuMasyvas [2];
+        } else if ($simbolis=="*") {
+            return $duomenuMasyvas[0] * $duomenuMasyvas [2];
+        } else if ($simbolis=="/") {
+          return $duomenuMasyvas[0] / $duomenuMasyvas [2];
+        } else if ($simbolis=="%") {
+            return $duomenuMasyvas[0] % $duomenuMasyvas [2];
+        }
+        return "veiskmo negalima atlikti";
+    }
+
 if (isset($_GET["patvirtinti"])) {
     echo "mygtukas paspaustas";
 
     if (isset ($_GET["aritmetika"]) && !empty($_GET["aritmetika"])) {
         $aritmetika=$_GET["aritmetika"]; 
+
+        $aritmetika=str_replace(" ", "", $aritmetika); 
+        $rezultatas=0;
+        $duomenuMasyvas=0; 
 
         // $duomenuMasyvas= str_split($aritmetika, 1); // funkcija isskaido teksta i masyva i vienodas dalis
 
@@ -28,14 +69,78 @@ if (isset($_GET["patvirtinti"])) {
 
         // reikia pritaikyti ir kitiems simboliams 
         // skaiciai su tarpais, sutvarkyti 
-        $duomenuMasyvas=explode("+", $aritmetika); 
+        //$duomenuMasyvas=explode("+", $aritmetika); 
 
-        var_dump($duomenuMasyvas);
+        // gaunamas dvieju elementu masyvas
+        // $duomenumasyvas [0]=4, 
+        // $duomenumasyvas [1]=5, 
+        // galima prideti trecia elementa $duomenumasyvas [2]="+",
+        // kintamuju sukeitimas pasilekiant pagalbini kintamaji (zemiau)
+        //$duomenuMasyvas[2]="+"; 
 
-
-
-        echo $aritmetika; 
+        // strpos- string position- iesko ar text el yra kazkoks simbolis
+        // (nurodomas- funkcija ir  simbolis kurio ieskoma)
         
+        $simbolioPozicija= strpos( $aritmetika,"+"); 
+        
+        // jeigu funkcija neranda simbolio- grazinama- false
+        // jeigu simbolis randamas- grazina simbolio pozicija - pvz 1 (pagal masyva)
+
+        // substr_count- substring count- kiek kartu pasikartojama text eiluteje
+
+        
+        //$pliusuSk= substr_count($tekstas, "+"); 
+
+       // echo "Pliusu skaicius" . $pliusuSk; 
+
+
+
+        if(strpos($aritmetika,"+")!=false && substr_count($aritmetika,"+")==1) {
+            $rezultatas=skaiciavimoFunkcija("+", $aritmetika);
+        
+        } else if (strpos($aritmetika,"-") !=false && substr_count($aritmetika,"-")==1) {
+            $rezultatas=skaiciavimoFunkcija("-", $aritmetika); 
+        } else if (strpos($aritmetika,"*") !=false && substr_count($aritmetika,"*")==1) {
+            $rezultatas=skaiciavimoFunkcija("*", $aritmetika); 
+        } else if (strpos($aritmetika,"/") !=false && substr_count($aritmetika,"/")==1) {
+            $rezultatas=skaiciavimoFunkcija("/", $aritmetika); 
+        } else if (strpos($aritmetika,"%") !=false && substr_count($aritmetika,"%")==1) {
+            $rezultatas=skaiciavimoFunkcija("%", $aritmetika); 
+        
+            } else {
+                $rezultatas= "veiksmo zenklas neegzistuoja"; 
+            }
+
+        // visu cookies saugojimui 
+               
+            
+        
+        // sukuriamas aritmetikos ir rezultato cookiai
+            setcookie("aritmetika", $_COOKIE["aritmetika"]. "|" . $aritmetika, time() +3600, "/"); 
+            setcookie("rezultatas", $_COOKIE["rezultatas"]. "|" . $rezultatas, time() +3600, "/");
+
+        // atvaizdavimas   
+        echo "<div>";
+        echo "Skaiciai is laikinosios atminties:<br>"; 
+        // cookiu isvedimas
+            echo $_COOKIE ["aritmetika"];
+            echo $_COOKIE ["rezultatas"];
+        // isvedimo pabaiga 
+        echo "</div>";
+        
+        
+
+       
+        echo "<div>"; 
+        echo $aritmetika; 
+        echo "</div>";
+       
+
+        echo "<div>"; 
+        echo $rezultatas; 
+        echo "</div>"; 
+        
+
     } else {
         echo "<br>";
         echo "laukelis tuscias"; 
@@ -49,10 +154,12 @@ if (isset($_GET["patvirtinti"])) {
 
 // susikurti skaiciuotuva, veiksma isvesti i ta pati laukeli
 // rezultatas isvedamas i div
+
 // papildyti
 // kad rezultatas butu atvaizduojamas tame paciame lange 
 
-
+// padaryti skaiciavimo istorija 
+// reikia informacijos saugojimo vietos- COOKIES 
 
 
 ?>
