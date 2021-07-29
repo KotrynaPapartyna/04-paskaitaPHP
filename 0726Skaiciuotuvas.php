@@ -122,11 +122,16 @@ if (isset($_GET["patvirtinti"])) {
             setcookie("rezultatas", $_COOKIE["rezultatas"]. "|" . $rezultatas, time() +3600, "/");
         
         } else {
-            setcookie("aritmetika",  $aritmetika, time() +3600, "/"); 
-            setcookie("rezultatas",  $rezultatas, time() +3600, "/");
+            setcookie("aritmetika", $aritmetika, time() +3600, "/"); 
+            setcookie("rezultatas", $rezultatas, time() +3600, "/");
         }
 
-
+        echo "<div>"; 
+        echo "<h1>skaiciavimo rezultatas</h1>"; 
+        echo $aritmetika; 
+        echo "="; 
+        echo $rezultatas; 
+        echo "</div>"; 
 
         // atvaizdavimas   
         
@@ -134,21 +139,49 @@ if (isset($_GET["patvirtinti"])) {
 
         if(isset($_COOKIE ["aritmetika"])&& isset($_COOKIE ["rezultatas"])) {
             echo "<div>";
-            echo "Skaiciai is laikinosios atminties:<br>"; 
-            echo $_COOKIE ["aritmetika"];
-            echo $_COOKIE ["rezultatas"];
+            //echo "Skaiciai is laikinosios atminties:<br>";
+           // echo "=";
+            //echo $_COOKIE ["aritmetika"];
+           // echo $_COOKIE ["rezultatas"];
+
+
+            $aritmetikaMasyvas=explode("|", $_COOKIE["aritmetika"]); 
+            $rezultatoMasyvas=explode("|", $_COOKIE["rezultatas"]); 
+
+            // var_dump($aritmetikaMasyvas);
+            // var_dump($rezultatoMasyvas);
+
+            // reikia pritaikyti cikla
+            // foreach galima dirbti tik su vienu masuvy
+            //for- galima su keliais, pvz su 2 
+
+            echo "<table>";
+
+            for($i=0; $i<count($aritmetikaMasyvas); $i++) {
+                
+                echo "<tr>";
+
+                    echo "<td>";
+                    echo $aritmetikaMasyvas[$i]; 
+                    echo "</td>";
+
+                    echo "<td>";
+                    echo $rezultatoMasyvas[$i]; 
+                    echo "</td>";
+
+                echo "<tr>";
+            
+            }
+            echo "</table>";
+            
+
             // isvedimo pabaiga 
             echo "</div>";
         }
                
-        echo "<div>"; 
-        echo $aritmetika; 
-        echo "</div>";
-       
+              
 
-        echo "<div>"; 
-        echo $rezultatas; 
-        echo "</div>"; 
+        
         
 
     } else {
