@@ -116,21 +116,31 @@ if (isset($_GET["patvirtinti"])) {
             
         
         // sukuriamas aritmetikos ir rezultato cookiai
+        if(isset($_COOKIE ["aritmetika"])&& isset($_COOKIE ["rezultatas"])) {
+
             setcookie("aritmetika", $_COOKIE["aritmetika"]. "|" . $aritmetika, time() +3600, "/"); 
             setcookie("rezultatas", $_COOKIE["rezultatas"]. "|" . $rezultatas, time() +3600, "/");
+        
+        } else {
+            setcookie("aritmetika",  $aritmetika, time() +3600, "/"); 
+            setcookie("rezultatas",  $rezultatas, time() +3600, "/");
+        }
+
+
 
         // atvaizdavimas   
-        echo "<div>";
-        echo "Skaiciai is laikinosios atminties:<br>"; 
+        
         // cookiu isvedimas
+
+        if(isset($_COOKIE ["aritmetika"])&& isset($_COOKIE ["rezultatas"])) {
+            echo "<div>";
+            echo "Skaiciai is laikinosios atminties:<br>"; 
             echo $_COOKIE ["aritmetika"];
             echo $_COOKIE ["rezultatas"];
-        // isvedimo pabaiga 
-        echo "</div>";
-        
-        
-
-       
+            // isvedimo pabaiga 
+            echo "</div>";
+        }
+               
         echo "<div>"; 
         echo $aritmetika; 
         echo "</div>";
